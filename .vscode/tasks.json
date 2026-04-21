@@ -1,6 +1,35 @@
 {
     "tasks": [
         {
+            "label": "STM32: Verify Launch (auto-fix)",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/scripts/verify_stm32_debug_config.py",
+                "--fix"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "STM32: Verify Launch (strict)",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/scripts/verify_stm32_debug_config.py",
+                "--fix",
+                "--strict"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
             "type": "cppbuild",
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",

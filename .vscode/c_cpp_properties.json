@@ -1,0 +1,30 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "STM32G0B1RE",
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+      "intelliSenseMode": "linux-gcc-arm",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "defines": [
+        "USE_HAL_DRIVER",
+        "STM32G0B1xx"
+      ],
+      "includePath": [
+        "${workspaceFolder}/firmware/Core/Inc",
+        "${workspaceFolder}/firmware/App",
+        "${workspaceFolder}/firmware/Drivers/STM32G0xx_HAL_Driver/Inc",
+        "${workspaceFolder}/firmware/Drivers/STM32G0xx_HAL_Driver/Inc/Legacy",
+        "${workspaceFolder}/firmware/Drivers/CMSIS/Device/ST/STM32G0xx/Include",
+        "${workspaceFolder}/firmware/Drivers/CMSIS/Include"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/firmware"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
+    }
+  ]
+}

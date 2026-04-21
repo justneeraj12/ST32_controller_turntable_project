@@ -147,6 +147,7 @@ HAL_StatusTypeDef TurntableTest_PowerSTEP01_Init24V(void)
     if ((hspi1.Init.CLKPolarity != SPI_POLARITY_HIGH) ||
         (hspi1.Init.CLKPhase != SPI_PHASE_2EDGE))
     {
+        printf("INIT_FAIL_SPI_MODE\r\n");
         return HAL_ERROR;
     }
 
@@ -154,37 +155,44 @@ HAL_StatusTypeDef TurntableTest_PowerSTEP01_Init24V(void)
 
     if (powerstep_write_u8(POWERSTEP_REG_KVAL_HOLD, POWERSTEP_KVAL_HOLD_10PCT) != HAL_OK)
     {
+        printf("INIT_FAIL_KVAL_HOLD\r\n");
         return HAL_ERROR;
     }
 
     if (powerstep_write_u8(POWERSTEP_REG_KVAL_RUN, POWERSTEP_KVAL_RUN_50PCT) != HAL_OK)
     {
+        printf("INIT_FAIL_KVAL_RUN\r\n");
         return HAL_ERROR;
     }
 
     if (powerstep_write_u8(POWERSTEP_REG_KVAL_ACC, POWERSTEP_KVAL_ACC_50PCT) != HAL_OK)
     {
+        printf("INIT_FAIL_KVAL_ACC\r\n");
         return HAL_ERROR;
     }
 
     if (powerstep_write_u8(POWERSTEP_REG_KVAL_DEC, POWERSTEP_KVAL_DEC_50PCT) != HAL_OK)
     {
+        printf("INIT_FAIL_KVAL_DEC\r\n");
         return HAL_ERROR;
     }
 
     if (powerstep_write_u16(POWERSTEP_REG_ACC, POWERSTEP_ACC_PROFILE) != HAL_OK)
     {
+        printf("INIT_FAIL_ACC\r\n");
         return HAL_ERROR;
     }
 
     if (powerstep_write_u16(POWERSTEP_REG_DEC, POWERSTEP_DEC_PROFILE) != HAL_OK)
     {
+        printf("INIT_FAIL_DEC\r\n");
         return HAL_ERROR;
     }
 
     /* Read status once to clear stale flags after boot/register writes. */
     if (powerstep_read_status(&status_word) != HAL_OK)
     {
+        printf("INIT_FAIL_STATUS\r\n");
         return HAL_ERROR;
     }
 
@@ -215,20 +223,25 @@ void Check_Status(void)
 
 HAL_StatusTypeDef Test_Turntable_90deg(void)
 {
+    printf("TEST_START\r\n");
+
     if (TurntableTest_PowerSTEP01_Init24V() != HAL_OK)
     {
+        printf("TEST_ABORT_INIT\r\n");
         return HAL_ERROR;
     }
 
     /* MOVE (0x40 | DIR) command: rotate 90 degrees clockwise. */
     if (powerstep_move(POWERSTEP_DIR_CW, TURNTABLE_90DEG_STEPS) != HAL_OK)
     {
+        printf("TEST_ABORT_MOVE_CW\r\n");
         return HAL_ERROR;
     }
     Check_Status();
 
     if (powerstep_wait_motion_done(MOVE_TIMEOUT_MS) != HAL_OK)
     {
+        printf("TEST_ABORT_TIMEOUT_CW\r\n");
         return HAL_TIMEOUT;
     }
 
@@ -237,15 +250,18 @@ HAL_StatusTypeDef Test_Turntable_90deg(void)
     /* Return back to 0 by moving the same amount counter-clockwise. */
     if (powerstep_move(POWERSTEP_DIR_CCW, TURNTABLE_90DEG_STEPS) != HAL_OK)
     {
+        printf("TEST_ABORT_MOVE_CCW\r\n");
         return HAL_ERROR;
     }
     Check_Status();
 
     if (powerstep_wait_motion_done(MOVE_TIMEOUT_MS) != HAL_OK)
     {
+        printf("TEST_ABORT_TIMEOUT_CCW\r\n");
         return HAL_TIMEOUT;
     }
 
     Check_Status();
+    printf("TEST_DONE\r\n");
     return HAL_OK;
 }
