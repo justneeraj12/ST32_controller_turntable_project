@@ -100,6 +100,48 @@ void Verify_IHM03A1_Driver(void)
 
 Closed-loop PID function using `TIM2` in Encoder Mode. It maps encoder counts (4096 CPR) to degrees, computes position error for targets `{0, 90, 180}`, and returns a velocity command for PowerSTEP01.
 
+### PID Formula (Current Target)
+
+$$
+e_k = \operatorname{wrap}_{[-180,180]}\left(\theta_{target} - \theta_{measured}\right)
+$$
+
+$$
+I_k = \operatorname{clip}\left(I_{k-1} + e_k\Delta t, -I_{max}, I_{max}\right)
+$$
+
+$$
+D_k = \frac{e_k - e_{k-1}}{\Delta t}
+$$
+
+$$
+u_k = K_p e_k + K_i I_k + K_d D_k
+$$
+
+$$
+f_{step,k} = \operatorname{clip}\left(|u_k|\cdot s(\theta), f_{min}, f_{max}\right)
+$$
+
+Safety scaling near the sensitive angles ($90^\circ$ and $180^\circ$):
+
+$$
+d = \min\left(|\operatorname{wrap}(90^\circ-\theta)|, |\operatorname{wrap}(180^\circ-\theta)|\right)
+$$
+
+$$
+s(\theta)=
+\begin{cases}
+1, & d\ge 20^\circ \\
+0.25 + 0.75\cdot\frac{d}{20^\circ}, & d<20^\circ
+\end{cases}
+$$
+
+Current tuning constants used in the STM32 closed-loop controller:
+
+- $K_p = 26.0$
+- $K_i = 2.4$
+- $K_d = 0.18$
+
 ```c
 #include "main.h"
 #include <stdint.h>
