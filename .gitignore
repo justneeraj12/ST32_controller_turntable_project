@@ -1,0 +1,23 @@
+# STM32CubeIDE build output
+**/Debug/
+**/Release/
+**/build/
+
+# Object and map files
+*.o
+*.d
+*.elf
+*.map
+*.bin
+*.hex
+
+# STM32CubeIDE user/workspace files
+*.launch
+.metadata/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.deb_bundle.sh
+*.zip
+build/

@@ -1,0 +1,19 @@
+{
+    "name": "STM32-Automation-Lab",
+    "image": "mcr.microsoft.com/devcontainers/cpp:ubuntu-24.04",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "stmicroelectronics.stm32-vscode-extension",
+                "ms-vscode.cpptools",
+                "GitHub.copilot",
+                "twxs.cmake"
+            ]
+        }
+    },
+    "postCreateCommand": "sudo apt update && sudo apt install -y gcc-arm-none-eabi stlink-tools openocd",
+    "runArgs": ["--privileged", "-v", "/dev/bus/usb:/dev/bus/usb"]
+}
